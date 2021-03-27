@@ -67,23 +67,24 @@ int main(int argc, char *argv[])
   random_device rd;
   mt19937 gen(rd());
   uniform_int_distribution<> distr(0, 2500);
-  for (char **i = argv; i != argv + argc; i++)
-  {
-    try
-    {
-      int val = stoi(*i);
-      userValues.push_back(val);
-    }
-    catch (invalid_argument)
-    {
-      continue;
-    }
-  }
-  // for (int i = 0; i <= 1024; i++)
+  // for (char **i = argv; i != argv + argc; i++)
   // {
-  //   userValues.push_back(i);
-  //   // userValues.push_back(distr(gen));
+  //   try
+  //   {
+  //     int val = stoi(*i);
+  //     userValues.push_back(val);
+  //   }
+  //   catch (invalid_argument)
+  //   {
+  //     continue;
+  //   }
   // }
+  // 1048576
+  for (int i = 0; i <= 5000; i++)
+  {
+    userValues.push_back(i);
+    // userValues.push_back(distr(gen));
+  }
   // reverse(userValues.begin(), userValues.end());
   start = clock();
   QuickSort(userValues, 0, userValues.size() - 1);
