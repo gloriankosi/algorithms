@@ -3,6 +3,7 @@
 # Prerequisites
 *.d
 *.txt
+select
 
 # Compiled Object files
 *.slo
