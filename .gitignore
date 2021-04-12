@@ -2,6 +2,7 @@
 
 # Prerequisites
 *.d
+*.txt
 
 # Compiled Object files
 *.slo
@@ -37,3 +38,4 @@
 .vscode/tasks.json
 .vscode/c_cpp_properties.json
 .vscode/launch.json
+sample.cc
