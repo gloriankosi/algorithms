@@ -15,6 +15,9 @@ g++ -std=c++2a select.cc -o select
 To run:
 ./select
 
+
+NOTE: Sometimes some of the SELECT functions can take a long time depending on the randomness of the 
+initial sorts, just cancel it and run it again, it happens infrequently.
 */
 
 #include <algorithm>
