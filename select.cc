@@ -7,7 +7,7 @@ to see and compare emplace_back()
 
 Recursion on SELECT3 causes stack overflow, 1*10^6 elements too large, used alternative method instead
 
--------Must be using at least C++17---------
+-------Must be using at least C++20---------
 
 To compile, example:
 g++ -std=c++2a select.cc -o select
