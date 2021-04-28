@@ -3,7 +3,6 @@
 # Prerequisites
 *.d
 *.txt
-select
 
 # Compiled Object files
 *.slo
@@ -40,3 +39,4 @@ select
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 sample.cc
+bin_search
