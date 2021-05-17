@@ -17,25 +17,42 @@ using std::invalid_argument;
 using std::optional;
 using std::stoi;
 
+/**
+ * @brief Node struct
+ * 
+ * 
+ */
 struct Node
 {
     optional<int> value;
-    Node *left = nullptr;
-    Node *right = nullptr;
+    Node *left = nullptr;  // Pointer to left subtree
+    Node *right = nullptr; // Pointer to right subtree
 };
 
+/**
+ * @brief 
+ * 
+ * @param root Pointer to root node
+ * @param temp Pointer to node that traverses the tree during insertion
+ * @param i Command-line argument 
+ */
 void Insert(struct Node *root, struct Node *temp, char *i);
 
+/**
+ * @brief Standard main function
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, char *argv[])
 {
-    Node *root = new Node();
-    Node *temp = root;
+    Node *root = new Node(); // Root of the BST
+    Node *temp = root;       // Pointer that traverses tree during insertion
     for (char **i = argv; i != argv + argc; i++)
     {
         Insert(root, temp, *i);
     }
-    root = root->left;
-    cout << *root->left->value;
     return -1;
 }
 
@@ -81,6 +98,10 @@ void Insert(struct Node *root, struct Node *temp, char *i)
             }
         }
     }
+    /**
+     * @brief Ignore any input that isn't convertable to an integer
+     * 
+     */
     catch (invalid_argument)
     {
         ;
