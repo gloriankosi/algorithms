@@ -8,6 +8,8 @@
  * To run:
  * ./bst [some-integers]
  * 
+ * Left subtree < Root
+ * Right subtree >= Root
  */
 
 // TODO: Add delete and search functions
@@ -55,6 +57,18 @@ int main(int argc, char *argv[])
     {
         Insert(root, temp, *i);
     }
+    /**
+     * @brief Enter testing expressions below or above this comment block
+     * 
+     * Example using stdout to get value of first node in the left subtree of the root:
+     * cout<<*root->left->value<<"\n";
+     * 
+     * Likewise for first node in the right subtree of root:
+     * cout<<*root->right->value<<"\n"
+     * 
+     * Or, 
+     * root=root->left; Move root to the first node on left, same expressions as before to print values
+     */
     return -1;
 }
 
@@ -62,16 +76,20 @@ void Insert(struct Node *root, struct Node *temp, char *i)
 {
     try
     {
-        int val = stoi(i);
+        int val = stoi(i); // Attempt conversion from char to int
+
+        if (!temp->value) // Needed because no initial value in root->value
+        {
+            temp->value = val;
+        }
+
         while (temp != nullptr)
         {
-            if (!temp->value)
+            if (val < temp->value) // If current value from command-line is less than the node we're sitting on
             {
-                temp->value = val;
-                break;
-            }
-            if (val < temp->value)
-            {
+                // Check if the left subtree for the node we're sitting on is empty,
+                // if empty, make a new Node x, set x->value to the current value from command-line, and
+                // set it to the left subtree of the temp node
                 if (temp->left == nullptr)
                 {
                     Node *x = new Node();
@@ -79,13 +97,15 @@ void Insert(struct Node *root, struct Node *temp, char *i)
                     temp->left = x;
                     break;
                 }
+                // If temp->left is NOT null, then go onto the next node in the left subtree
                 else
                 {
                     temp = temp->left;
                 }
             }
-            else
+            else // Else the current value from command-line is >= to temp->value (node we're sitting on)
             {
+                // Same procedure as left subtree, but we use right subtree instead
                 if (temp->right == nullptr)
                 {
                     Node *y = new Node();
@@ -93,6 +113,7 @@ void Insert(struct Node *root, struct Node *temp, char *i)
                     temp->right = y;
                     break;
                 }
+                // Same procedure as left subtree, but we go to the next node in the right subtree instead.s
                 else
                 {
                     temp = temp->right;
@@ -102,7 +123,6 @@ void Insert(struct Node *root, struct Node *temp, char *i)
     }
     /**
      * @brief Ignore any input that isn't convertable to an integer
-     * 
      */
     catch (invalid_argument)
     {
