@@ -41,6 +41,7 @@ struct Node
  * @param i Command-line argument 
  */
 void Insert(struct Node *root, struct Node *temp, char *i);
+void Delete(struct Node *root, struct Node *temp, int i);
 
 /**
  * @brief Standard main function
