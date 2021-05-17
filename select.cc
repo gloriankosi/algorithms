@@ -1,7 +1,7 @@
 /*
 Glorian Kosi
 
-PERSONAL TODO: Investigate reserve() and generate(), using generate 
+TODO: Investigate reserve() and generate(), using generate 
 with vector<int>(XYZ) took too long, try with reserve next
 to see and compare emplace_back()
 
