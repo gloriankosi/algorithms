@@ -10,6 +10,8 @@
  * 
  */
 
+// TODO: Add delete and search functions
+
 #include <iostream>
 #include <optional>
 using std::cout;
