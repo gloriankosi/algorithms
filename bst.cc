@@ -26,14 +26,14 @@ using std::string;
 
 /**
  * @brief Node struct
- * 
- * 
  */
 struct Node
 {
     optional<int> value;
     Node *left = nullptr;  // Pointer to left subtree
     Node *right = nullptr; // Pointer to right subtree
+    Node() {}
+    Node(int value) : value(value) {}
 };
 
 /**
@@ -43,9 +43,9 @@ struct Node
  * @param temp Pointer to node that traverses the tree during insertion
  * @param i Command-line argument 
  */
-void Insert(struct Node *root, struct Node *temp, char *i);
-void Delete(struct Node *root, struct Node *temp, int i);
-
+void Insert(struct Node *&, struct Node *, char *);
+struct Node *Delete(struct Node *, int);
+struct Node *Min(struct Node *);
 /**
  * @brief Standard main function
  * 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     {
         Insert(root, temp, *i);
     }
-    // Delete(root, temp, 10);
+    root = Delete(root, 10);
     /**
      * @brief Enter testing expressions below or above this comment block
      * 
@@ -74,13 +74,12 @@ int main(int argc, char *argv[])
      * Or, 
      * root=root->left; Move root to the first node on left, same expressions as before to print values
      */
-    cout << *root->right->value << "\n";
+    cout << *root->value << "\n";
     return -1;
 }
 
-void Insert(struct Node *root, struct Node *temp, char *i)
+void Insert(struct Node *&root, struct Node *temp, char *i)
 {
-    // cout << i << "\n";
     try
     {
         int val = stoi(i); // Attempt conversion from char to int
@@ -100,14 +99,12 @@ void Insert(struct Node *root, struct Node *temp, char *i)
             if (val < temp->value) // If current value from command-line is less than the node we're sitting on
             {
                 // Check if the left subtree for the node we're sitting on is empty,
-                // if empty, make a new Node x, set x->value to the current value from command-line, and
+                // if empty, make a new Node x and set value to the current value from command-line, and
                 // set it to the left subtree of the temp node
                 if (temp->left == nullptr)
                 {
-                    Node *x = new Node();
-                    x->value = val;
-                    temp->left = x;
-                    break;
+                    temp->left = new Node(val);
+                    return;
                 }
                 // If temp->left is NOT null, then go onto the next node in the left subtree
                 else
@@ -120,10 +117,8 @@ void Insert(struct Node *root, struct Node *temp, char *i)
                 // Same procedure as left subtree, but we use right subtree instead
                 if (temp->right == nullptr)
                 {
-                    Node *y = new Node();
-                    y->value = val;
-                    temp->right = y;
-                    break;
+                    temp->right = new Node(val);
+                    return;
                 }
                 // Same procedure as left subtree, but we go to the next node in the right subtree instead.s
                 else
@@ -142,49 +137,50 @@ void Insert(struct Node *root, struct Node *temp, char *i)
     }
 }
 
-void Delete(struct Node *root, struct Node *temp, int i)
+struct Node *Delete(struct Node *root, int i)
 {
-    while (temp != nullptr)
+    if (root == nullptr)
     {
-        if (temp->value == i)
+        return root;
+    }
+    if (root->value == i)
+    {
+        if (root->left == nullptr)
         {
-            if (temp->left == nullptr && temp->right == nullptr) // Condition 1
-            {
-                cout << "Condition 1 delete"
-                     << "\n";
-                delete temp; //
-                break;
-            }
-            if (temp->left != nullptr && temp->right == nullptr) // Condition 2.a
-            {
-                cout << "Condition 2.a delete"
-                     << "\n";
-                temp = temp->left;
-                break;
-            }
-            if (temp->left == nullptr && temp->right != nullptr) // Condition 2.b
-            {
-                cout << "Condition 2.b delete"
-                     << "\n";
-                temp = temp->right;
-                break;
-            }
-            if (temp->left != nullptr && temp->right != nullptr) // Condition 3
-            {
-                cout << "Condition 3 delete"
-                     << "\n";
-            }
+            Node *x = root->right;
+            delete root;
+            return x;
         }
         else
         {
-            if (temp->value > i)
+            if (root->right == nullptr)
             {
-                temp = temp->left;
-            }
-            else
-            {
-                temp = temp->right;
+                Node *y = root->left;
+                delete root;
+                return y;
             }
         }
     }
+    if (root->value > i)
+    {
+        return Delete(root->left, i);
+    }
+    else
+    {
+        return Delete(root->right, i);
+    }
+    Node *z = Min(root);
+    root->value = z->value;
+    root->right = Delete(root->right, i);
+    return root;
+}
+
+struct Node *Min(struct Node *root)
+{
+    Node *xy = root;
+    while (xy && xy->left != nullptr)
+    {
+        xy = xy->left;
+    }
+    return xy;
 }
