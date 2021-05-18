@@ -1,6 +1,7 @@
 /**
  * @file bst.cc
  * @author Glorian Kosi
+ * 
  * -------Must be using at least C++20---------
  * To compile, example:
  * g++ -std=c++2a bst.cc -o bst
@@ -10,6 +11,9 @@
  * 
  * Left subtree < Root
  * Right subtree >= Root
+ * 
+ * Uses inorder successor for deletion of a node with 2 children
+ * 
  */
 
 // TODO: Add search functions
@@ -37,15 +41,29 @@ struct Node
 };
 
 /**
- * @brief 
+ * @brief Insert node into a tree
  * 
- * @param root Pointer to root node
- * @param temp Pointer to node that traverses the tree during insertion
- * @param i Command-line argument 
+ * @param root 
+ * @param temp 
+ * @param i 
  */
 void Insert(struct Node *&, struct Node *, char *);
-struct Node *Delete(struct Node *, int);
-struct Node *Min(struct Node *);
+
+/**
+ * @brief Delete a node from a tree
+ * 
+ * @param root
+ * @param i 
+ * @return struct Node* 
+ */
+struct Node *Delete(struct Node *root, int i);
+/**
+ * @brief Find minimum value in a tree
+ * 
+ * @param root 
+ * @return struct Node* 
+ */
+struct Node *Min(struct Node *root);
 /**
  * @brief Standard main function
  * 
@@ -139,39 +157,33 @@ void Insert(struct Node *&root, struct Node *temp, char *i)
 
 struct Node *Delete(struct Node *root, int i)
 {
-    if (root == nullptr)
+    if (i < root->value) // If i is less than the current node value, then traverse left subtree
     {
-        return root;
+        root->left = Delete(root->left, i);
     }
-    if (root->value == i)
+
+    if (i > root->value) // If value of the i is greater than the current node value, then traverse right subtree
+    {
+        root->right = Delete(root->right, i);
+    }
+    if (i == root->value)
     {
         if (root->left == nullptr)
         {
-            Node *x = root->right;
+            struct Node *x = root->right;
             delete root;
             return x;
         }
-        else
+        if (root->right == nullptr)
         {
-            if (root->right == nullptr)
-            {
-                Node *y = root->left;
-                delete root;
-                return y;
-            }
+            struct Node *y = root->left;
+            delete root;
+            return y;
         }
+        struct Node *z = Min(root->right);
+        root->value = z->value;
+        root->right = Delete(root->right, root->value.value());
     }
-    if (root->value > i)
-    {
-        return Delete(root->left, i);
-    }
-    else
-    {
-        return Delete(root->right, i);
-    }
-    Node *z = Min(root);
-    root->value = z->value;
-    root->right = Delete(root->right, i);
     return root;
 }
 
