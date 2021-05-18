@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     {
         Insert(root, temp, *i);
     }
-    Delete(root, temp, 15);
+    // Delete(root, temp, 10);
     /**
      * @brief Enter testing expressions below or above this comment block
      * 
@@ -74,18 +74,25 @@ int main(int argc, char *argv[])
      * Or, 
      * root=root->left; Move root to the first node on left, same expressions as before to print values
      */
+    cout << *root->right->value << "\n";
     return -1;
 }
 
 void Insert(struct Node *root, struct Node *temp, char *i)
 {
+    // cout << i << "\n";
     try
     {
         int val = stoi(i); // Attempt conversion from char to int
-
-        if (!temp->value) // Needed because no initial value in root->value
+        /**
+         * @brief 
+         * Needed because no initial value in root->value, return from here after
+         * root value is set or it will end up in the right sub-tree.
+         */
+        if (!temp->value)
         {
             temp->value = val;
+            return;
         }
 
         while (temp != nullptr)
@@ -162,9 +169,11 @@ void Delete(struct Node *root, struct Node *temp, int i)
                 temp = temp->right;
                 break;
             }
-            // if (temp->left != nullptr && temp->right != nullptr) // Condition 3
-            // {
-            // }
+            if (temp->left != nullptr && temp->right != nullptr) // Condition 3
+            {
+                cout << "Condition 3 delete"
+                     << "\n";
+            }
         }
         else
         {
