@@ -12,14 +12,17 @@
  * Right subtree >= Root
  */
 
-// TODO: Add delete and search functions
+// TODO: Add search functions
 
 #include <iostream>
 #include <optional>
+#include <string>
+
 using std::cout;
 using std::invalid_argument;
 using std::optional;
 using std::stoi;
+using std::string;
 
 /**
  * @brief Node struct
@@ -128,5 +131,40 @@ void Insert(struct Node *root, struct Node *temp, char *i)
     catch (invalid_argument)
     {
         ;
+    }
+}
+
+void Delete(struct Node *root, struct Node *temp, int i)
+{
+    while (temp != nullptr)
+    {
+        if (temp->value == i)
+        {
+            if (temp->left == nullptr && temp->right == nullptr) // Condition 1
+            {
+                delete temp; //
+                break;
+            }
+            if (temp->left != nullptr && temp->right == nullptr) // Condition 2.a
+            {
+            }
+            if (temp->left == nullptr && temp->right != nullptr) // Condition 2.b
+            {
+            }
+            if (temp->left != nullptr && temp->right != nullptr) // Condition 3
+            {
+            }
+        }
+        else
+        {
+            if (temp->value > i)
+            {
+                temp = temp->left;
+            }
+            else
+            {
+                temp = temp->right;
+            }
+        }
     }
 }
