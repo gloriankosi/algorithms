@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     {
         Insert(root, temp, *i);
     }
+    Delete(root, temp, 15);
     /**
      * @brief Enter testing expressions below or above this comment block
      * 
@@ -142,18 +143,28 @@ void Delete(struct Node *root, struct Node *temp, int i)
         {
             if (temp->left == nullptr && temp->right == nullptr) // Condition 1
             {
+                cout << "Condition 1 delete"
+                     << "\n";
                 delete temp; //
                 break;
             }
             if (temp->left != nullptr && temp->right == nullptr) // Condition 2.a
             {
+                cout << "Condition 2.a delete"
+                     << "\n";
+                temp = temp->left;
+                break;
             }
             if (temp->left == nullptr && temp->right != nullptr) // Condition 2.b
             {
+                cout << "Condition 2.b delete"
+                     << "\n";
+                temp = temp->right;
+                break;
             }
-            if (temp->left != nullptr && temp->right != nullptr) // Condition 3
-            {
-            }
+            // if (temp->left != nullptr && temp->right != nullptr) // Condition 3
+            // {
+            // }
         }
         else
         {
