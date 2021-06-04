@@ -7,6 +7,8 @@
  * Link to more info on Heap's Algorithm:
  * https://en.wikipedia.org/wiki/Heap%27s_algorithm 
  * 
+ * Running time of Heap's Algorithm for n elements is O(n!)
+ * 
  */
 #include <iostream>
 #include <vector>
