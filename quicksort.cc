@@ -80,14 +80,14 @@ int main(int argc, char *argv[])
   //   }
   // }
   // 1048576
-  for (int i = 0; i <= 5000; i++)
+  for (int i = 0; i <= 50000; i++)
   {
-    userValues.push_back(i);
+    userValues.push_back(1);
     // userValues.push_back(distr(gen));
   }
   // reverse(userValues.begin(), userValues.end());
   start = clock();
-  QuickSort(userValues, 0, userValues.size() - 1);
+  QuickSort(userValues, 0, userValues.size() / 2);
   t = (clock() - start) / (double)CLOCKS_PER_SEC;
   cout << "---Time---"
        << "\n";
