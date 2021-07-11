@@ -27,9 +27,9 @@ struct Node
     Node *right = nullptr;
 };
 
-Node *Expression(Node *, FILE *);
-Node *Factor(Node *, FILE *);
-Node *Term(Node *, FILE *);
+Node *Expression(Node *, FILE *, symbol c);
+Node *Factor(Node *, FILE *, symbol c);
+Node *Term(Node *, FILE *, symbol c);
 Node *Literal(Node *, FILE *, symbol c);
 
 symbol next(FILE *);
@@ -46,10 +46,11 @@ int main(int argc, char *argv[])
     {
         std::cerr << e.what() << '\n';
     }
-    root = Expression(root, file);
+    root = Expression(root, file, fgetc(file));
     cout << (char)root->data << "\n";
     cout << (char)root->left->data << "\n";
-    cout << (char)root->right->data << "\n";
+    cout << (char)root->right->left->data << "\n";
+    cout << (char)root->right->right->data << "\n";
     return 0;
 };
 
@@ -68,37 +69,24 @@ Node *Literal(Node *T, FILE *file, symbol c)
     }
 };
 
-Node *Term(Node *T, FILE *file)
+Node *Term(Node *T, FILE *file, symbol c)
 {
-    symbol c = fgetc(file);
-
-    if (c == '{')
-    {
-        Expression(T, file);
-        fgetc(file);
-        return T;
-    }
-    else
-    {
-        Node *literalTree = new Node();
-        literalTree = Literal(T, file, c);
-        T = literalTree;
-        return T;
-    }
+    Node *literalTree = new Node();
+    literalTree = Literal(literalTree, file, c);
+    return literalTree;
 };
 
-Node *Factor(Node *T, FILE *file)
+Node *Factor(Node *T, FILE *file, symbol c)
 {
-
     Node *termTree = new Node();
-    termTree = Term(termTree, file);
-    symbol c = fgetc(file);
+    termTree = Term(termTree, file, c);
+    c = fgetc(file);
 
     if (c == '+')
     {
-
         Node *factorTree = new Node();
-        factorTree = Factor(T, file);
+        c = fgetc(file);
+        factorTree = Factor(factorTree, file, c);
         T->data = '+';
         T->left = termTree;
         T->right = factorTree;
@@ -107,7 +95,8 @@ Node *Factor(Node *T, FILE *file)
     else if (c == '-')
     {
         Node *factorTree = new Node();
-        factorTree = Factor(T, file);
+        c = fgetc(file);
+        factorTree = Factor(factorTree, file, c);
         T->data = '-';
         T->left = termTree;
         T->right = factorTree;
@@ -115,22 +104,21 @@ Node *Factor(Node *T, FILE *file)
     }
     else // <term> case
     {
-        T = termTree;
-        return T;
+        return Term(T, file, c);
     }
 };
 
-Node *Expression(Node *T, FILE *file)
+Node *Expression(Node *T, FILE *file, symbol c)
 {
-
     Node *factorTree = new Node();
-    factorTree = Factor(factorTree, file);
-    symbol c = fgetc(file);
+    factorTree = Factor(factorTree, file, c);
+    c = fgetc(file);
 
-    if ((c = fgetc(file)) == '*')
+    if (c == '*')
     {
         Node *expressionTree = new Node();
-        expressionTree = Expression(T, file);
+        c = fgetc(file);
+        expressionTree = Expression(expressionTree, file, c);
         T->data = '*';
         T->left = factorTree;
         T->right = expressionTree;
@@ -139,7 +127,8 @@ Node *Expression(Node *T, FILE *file)
     else if (c == '/')
     {
         Node *expressionTree = new Node();
-        expressionTree = Expression(T, file);
+        c = fgetc(file);
+        expressionTree = Expression(expressionTree, file, c);
         T->data = '/';
         T->left = factorTree;
         T->right = expressionTree;
