@@ -4,12 +4,20 @@
  * @brief 
  * 
  * 
-----Grammar used:
-<expression>  ::=  <factor>  * <expression>   |   <factor>  /  <expression>   |   <factor>
-<factor>  :==  <term> + <factor>  |  <term> - <factor>  |  <term>
-<term>  ::=  {  <expression>  }  |  <literal>
-<literal>  ::=  0|1|2|3|4|5|6|7|8|9
-----
+ * To compile:
+ * g++ -g -std=c++2a expr-tree.cc -o exp
+ * 
+ * To run:
+ * ./exp filename.txt
+ * 
+ * NOTE: You need a file when running, this file should contain an expression following the
+ * grammar below. There is no error checking so the grammar must be correct.
+ * 
+ * ----Grammar used----
+ * <expression>  ::=  <factor>  * <expression>   |   <factor>  /  <expression>   |   <factor>
+ * <factor>  :==  <term> + <factor>  |  <term> - <factor>  |  <term>
+ * <term>  ::=  {  <expression>  }  |  <literal>
+ * <literal>  ::=  0|1|2|3|4|5|6|7|8|9
  * 
  */
 
