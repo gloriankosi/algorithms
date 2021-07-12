@@ -2,7 +2,7 @@
  * @file bnf-recursive-desc.cc
  * @author Glorian Kosi
  * @brief 
- * 
+ * Builds and evaluates expression tree based on grammar using recursive descent.
  * 
  * To compile:
  * g++ -g -std=c++2a expr-tree.cc -o exp
@@ -23,8 +23,12 @@
 
 #include <iostream>
 
+using std::cerr;
 using std::cin;
 using std::cout;
+using std::endl;
+using std::exception;
+using std::string;
 
 typedef int symbol;
 
@@ -39,10 +43,12 @@ void Expression(Node *&, FILE *);
 void Factor(Node *&, FILE *);
 void Term(Node *&, FILE *);
 void Literal(Node *&, FILE *);
-
 void next(FILE *, symbol &);
+void printSubtree(Node *, const std::string &);
+void printTree(Node *);
+int evaluate(Node *);
 
-int c;
+int c; //global, keeps track of current character
 
 int main(int argc, char *argv[])
 {
@@ -52,19 +58,16 @@ int main(int argc, char *argv[])
     {
         file = fopen(argv[1], "r");
     }
-    catch (const std::exception &e)
+    catch (const exception &e)
     {
-        std::cerr << e.what() << '\n';
+        cerr << e.what() << '\n';
     }
 
     next(file, c);
 
     Expression(root, file);
-    cout << (char)root->data << "\n";
-    cout << (char)root->left->data << "\n";
-    cout << (char)root->right->data << "\n";
-    cout << (char)root->right->left->data << "\n";
-    cout << (char)root->right->right->data << "\n";
+    printTree(root);
+    cout << evaluate(root) << "\n";
     return 0;
 };
 
@@ -151,4 +154,89 @@ void Expression(Node *&T, FILE *file)
 void next(FILE *file, symbol &c)
 {
     c = fgetc(file);
+}
+
+int evaluate(Node *node)
+{
+    if (!node)
+    {
+        return 0;
+    }
+
+    if (!node->left && !node->right) // Leaf node
+    {
+
+        return node->data - '0';
+    }
+
+    char leftValue = evaluate(node->left);
+    char rightValue = evaluate(node->right);
+
+    if ((char)node->data == '+')
+    {
+        return leftValue + rightValue;
+    }
+    if ((char)node->data == '-')
+    {
+        return leftValue - rightValue;
+    }
+    if ((char)node->data == '*')
+    {
+        return leftValue * rightValue;
+    }
+    if ((char)node->data == '/')
+    {
+        return leftValue / rightValue;
+    }
+    return 0;
+}
+
+// https://linux.die.net/man/1/tree
+// https://stackoverflow.com/a/50650932
+void printSubtree(Node *root, const string &prefix)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    bool hasLeft = (root->left != NULL);
+    bool hasRight = (root->right != NULL);
+
+    if (!hasLeft && !hasRight)
+    {
+        return;
+    }
+
+    cout << prefix;
+    cout << ((hasLeft && hasRight) ? "├── " : "");
+    cout << ((!hasLeft && hasRight) ? "└── " : "");
+
+    if (hasRight)
+    {
+        bool printStrand = (hasLeft && hasRight && (root->right->right != NULL || root->right->left != NULL));
+        string newPrefix = prefix + (printStrand ? "│   " : "    ");
+        cout << (char)root->right->data << endl;
+        printSubtree(root->right, newPrefix);
+    }
+
+    if (hasLeft)
+    {
+        cout << (hasRight ? prefix : "") << "└── " << (char)root->left->data << endl;
+        printSubtree(root->left, prefix + "    ");
+    }
+}
+
+// https://linux.die.net/man/1/tree
+// https://stackoverflow.com/a/50650932
+void printTree(Node *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    cout << (char)root->data << endl;
+    printSubtree(root, "");
+    cout << endl;
 }
