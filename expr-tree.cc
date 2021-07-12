@@ -11,7 +11,8 @@
  * ./exp filename.txt
  * 
  * NOTE: You need a file when running, this file should contain an expression following the
- * grammar below. There is no error checking so the grammar must be correct.
+ * grammar below. There is no error checking so the grammar must be correct. For example, something
+ * like: {5*6}/2+5
  * 
  * ----Grammar used----
  * <expression>  ::=  <factor>  * <expression>   |   <factor>  /  <expression>   |   <factor>
